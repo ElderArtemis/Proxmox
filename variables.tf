@@ -3,7 +3,7 @@
 # -----------------------------------------------
 variable "proxmox_api_url" {
   type        = string
-  description = "URL de la API de Proxmox (ej: https://192.168.1.145:8006/api2/json)"
+  description = "URL de la API de Proxmox (ej: https://192.X.X/api2/json)"
   sensitive   = true
 }
 
@@ -35,19 +35,16 @@ variable "proxmox_tls_insecure" {
 variable "vm_name" {
   description = "Nombre para la nueva VM"
   type        = string
-  # Sin default
 }
 
 variable "vm_id" {
   description = "ID único para la nueva VM"
   type        = number
-  # Sin default
 }
 
 variable "vm_template" {
   description = "Nombre de la plantilla a clonar"
   type        = string
-  # Sin default
 }
 
 variable "vm_target_node" {
@@ -65,7 +62,7 @@ variable "vm_ip_config" {
 variable "vm_ci_user" {
   description = "Usuario de Cloud-Init"
   type        = string
-  default     = "ubuntu" # <-- Este está bien, es el estándar de la plantilla
+  default     = "ubuntu"
 }
 
 variable "vm_ci_password" {
@@ -78,7 +75,7 @@ variable "vm_ci_password" {
 variable "vm_ssh_key_path" {
   description = "Ruta al fichero de clave pública SSH"
   type        = string
-  default     = "~/.ssh/id_rsa.pub" # <-- Este default es genérico, está bien
+  default     = "~/.ssh/id_rsa.pub"
 }
 
 
