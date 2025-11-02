@@ -1,4 +1,4 @@
-resource "proxmox_vm_qemu" "vm_ansible" { # Renombrado para más claridad
+resource "proxmox_vm_qemu" "vm_ansible" {
   # Configuración de Cloud-Init
   ciuser     = var.vm_ci_user
   cipassword = var.vm_ci_password
