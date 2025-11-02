@@ -1,0 +1,13 @@
+# Ficheros de estado de Terraform
+*.tfstate
+*.tfstate.backup
+
+# Ficheros de variables locales (¡CONTIENEN SECRETOS!)
+*.tfvars
+*.tfvars.json
+
+# Directorio .terraform
+.terraform/
+.terraform.lock.hcl
+.main.bak
+*.bak*
