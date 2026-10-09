@@ -11,3 +11,6 @@
 .terraform.lock.hcl
 .main.bak
 *.bak*
+
+# Bloqueo local de Terraform (dice usuario, equipo y ruta)
+.terraform.tfstate.lock.info

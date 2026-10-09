@@ -1,8 +1,9 @@
 terraform {
   required_providers {
+    # El proveedor Telmate/proxmox falla con Proxmox 9 (permiso VM.Monitor y panics); bpg/proxmox sí funciona
     proxmox = {
-      source  = "Telmate/proxmox"
-      version = "2.9.11" # 
+      source  = "bpg/proxmox"
+      version = "0.66.0"
     }
   }
 }

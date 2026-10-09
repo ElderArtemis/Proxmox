@@ -1,37 +1,51 @@
-resource "proxmox_vm_qemu" "vm_ansible" {
-  # Configuración de Cloud-Init
-  ciuser     = var.vm_ci_user
-  cipassword = var.vm_ci_password
-  sshkeys    = file(var.vm_ssh_key_path)
+resource "proxmox_virtual_environment_vm" "mis_vms" {
+  # Una VM por cada entrada del mapa var.vms
+  for_each = var.vms
 
-  # Configuración de la VM
-  name        = var.vm_name
-  target_node = var.vm_target_node
-  clone       = var.vm_template
-  full_clone  = true
-  vmid        = var.vm_id
-  bootdisk    = "scsi0"
+  name      = each.key # la clave del mapa, p. ej. "vm-01"
+  node_name = var.vm_target_node
+  vm_id     = each.value.id # VMID, único en el clúster
 
-  # Recursos
-  cores   = var.vm_cores
-  vcpus   = var.vm_cores # Asumo vcpus = cores
-  memory  = var.vm_memory
-  agent   = 1
+  initialization {
+    user_account {
+      username = var.vm_ci_user
+      password = var.vm_ci_password
+      keys     = [file(var.vm_ssh_key_path)]
+    }
 
-  # Disco
-  disk {
-    type     = "scsi"
-    size     = var.vm_disk_size
-    storage  = var.vm_disk_storage
-    iothread = 1
+    ip_config {
+      ipv4 {
+        address = each.value.ip
+        gateway = var.vm_gateway
+      }
+    }
   }
 
-  # Red
-  network {
-    model  = "virtio"
+  cpu {
+    cores = each.value.cores
+  }
+
+  memory {
+    dedicated = each.value.memory
+  }
+
+  # La plantilla debe traer qemu-guest-agent; sin él, Terraform espera hasta agotar el tiempo
+  agent {
+    enabled = true
+  }
+
+  disk {
+    datastore_id = var.vm_disk_storage
+    interface    = "scsi0"
+    size         = each.value.disk_size
+    file_format  = "raw"
+  }
+
+  network_device {
     bridge = var.vm_network_bridge
   }
 
-  # Configuración IP
-  ipconfig0 = var.vm_ip_config
+  clone {
+    vm_id = var.vm_template_id
+  }
 }
